@@ -1,15 +1,3 @@
-"""
-db_connect.py
-=============
-Módulo de acesso a dados para o Dashboard SIH/SUS.
-Responsabilidade: conexão com o banco de dados PostgreSQL e funções de
-busca/agregação analítica por meio de queries SQL otimizadas.
-
-Todas as funções aceitam filtros opcionais (ano_aih, mes_aih, nome_municipio).
-Quando um filtro for None ou string vazia, ele é ignorado e a query retorna
-o consolidado completo.
-"""
-
 import os
 import pandas as pd
 from sqlalchemy import create_engine, text
