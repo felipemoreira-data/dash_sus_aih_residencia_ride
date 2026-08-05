@@ -19,7 +19,7 @@ from db_connect import (
 
 # GEOJSON LOCAL - CARREGAMENTO ÚNICO
 
-with open('municipios_br.json', encoding='utf-8') as f: 
+with open('municipios_ride.json', encoding='utf-8') as f: 
     GEOJSON_ESTADO = json.load(f)
     
 for feature in GEOJSON_ESTADO['features']:
