@@ -16,20 +16,18 @@ from db_connect import (
     LABELS_CIRURGICAS_VL,
 )
 
-# ===========================================================================
+
 # GEOJSON LOCAL - CARREGAMENTO ÚNICO
-# =======================================================================
+
 with open('municipios_br.json', encoding='utf-8') as f: 
     GEOJSON_ESTADO = json.load(f)
     
 for feature in GEOJSON_ESTADO['features']:
     cod = str(feature['properties']['codarea'])
     feature['properties']['codarea_6'] = cod[:6] # Remove dígito verificador
-# =======================================================================
 
-# ===========================================================================
 # Inicialização do App
-# ===========================================================================
+
 
 app = dash.Dash(
     __name__,
@@ -38,9 +36,8 @@ app = dash.Dash(
     title="BI — Produção Hospitalar SIH/SUS",
 )
 
-# ===========================================================================
+
 # Pré-carregamento das opções de filtro
-# ===========================================================================
 
 try:
     opcoes = obter_opcoes_filtros()
@@ -48,9 +45,9 @@ except Exception as e:
     print(f"[AVISO] Falha ao carregar opções de filtro: {e}")
     opcoes = {"anos": [], "meses": [], "municipios": []}
 
-# ===========================================================================
+
 # Paleta de cores alinhada ao tema FLATLY
-# ===========================================================================
+
 
 COR_PRIMARIA  = "#2C3E50"   # azul-escuro FLATLY
 COR_SECUNDARIA = "#18BC9C"  # verde-teal FLATLY
@@ -60,9 +57,8 @@ COR_INFO      = "#3498DB"   # azul claro
 COR_CINZA     = "#95A5A6"
 SEQUENCIA_BLOCOS = [COR_SECUNDARIA, COR_INFO, COR_AVISO, COR_PERIGO]
 
-# ===========================================================================
+
 # Componentes Reutilizáveis
-# ===========================================================================
 
 def cartao_kpi(titulo: str, valor_id: str, cor: str = COR_PRIMARIA) -> dbc.Card:
     """Retorna um card de KPI com título e valor dinâmico."""
@@ -84,9 +80,9 @@ def spinner(children) -> dcc.Loading:
     return dcc.Loading(type="circle", color=COR_SECUNDARIA, children=children)
 
 
-# ===========================================================================
+
 # Sidebar de Filtros
-# ===========================================================================
+
 
 sidebar = html.Div(
     [
@@ -158,11 +154,10 @@ sidebar = html.Div(
     },
 )
 
-# ===========================================================================
-# Abas
-# ===========================================================================
 
-# --- ABA 1: EFICIÊNCIA ORÇAMENTÁRIA ----------------------------------------
+# Abas
+
+# ABA 1: EFICIÊNCIA ORÇAMENTÁRIA 
 aba_orcamento = dbc.Container([
     # KPIs
     dbc.Row([
@@ -192,7 +187,7 @@ aba_orcamento = dbc.Container([
 ], fluid=True, className="py-3")
 
 
-# --- ABA 2: PRESSÃO ASSISTENCIAL -------------------------------------------
+# ABA 2: PRESSÃO ASSISTENCIAL
 aba_pressao = dbc.Container([
     # KPIs
     dbc.Row([
@@ -221,7 +216,7 @@ aba_pressao = dbc.Container([
 ], fluid=True, className="py-3")
 
 
-# --- ABA 3: PRODUTIVIDADE CIRÚRGICA -----------------------------
+# ABA 3: PRODUTIVIDADE CIRÚRGICA 
 aba_cirurgias = dbc.Container([
     # KPIs
     dbc.Row([
@@ -250,7 +245,7 @@ aba_cirurgias = dbc.Container([
 ], fluid=True, className="py-3")
 
 
-# --- ABA 4: VISÃO TERRITORIAL ---
+# ABA 4: VISÃO TERRITORIAL
 aba_territorial = dbc.Container([
     dbc.Row([
         # Painel de controle do mapa
@@ -296,9 +291,8 @@ aba_territorial = dbc.Container([
 ], fluid=True, className="py-3")
 
 
-# ======================
+
 # Layout Principal
-# ======================
 
 TOPBAR_STYLE = {
     "backgroundColor": COR_PRIMARIA,
@@ -357,9 +351,9 @@ app.layout = dbc.Container([
 ], fluid=True, style={"backgroundColor": "#F4F6F7", "minHeight": "100vh", "padding": 0})
 
 
-# ==================
+
 # CSS inline para as abas
-# ===================
+
 
 app.index_string = """<!DOCTYPE html>
 <html>
@@ -400,9 +394,9 @@ app.index_string = """<!DOCTYPE html>
 </html>"""
 
 
-# ========
+
 # Utilitários de formatação
-# ================
+
 
 def fmt_brl(valor: float) -> str:
     """Formata um número como moeda brasileira."""
@@ -414,9 +408,9 @@ def fmt_int(valor: float) -> str:
     return f"{int(valor):,}".replace(",", ".")
 
 
-# =======================
+
 # Callback: Roteamento das Abas
-# =======================
+
 
 @app.callback(
     Output("conteudo-aba", "children"),
@@ -432,9 +426,9 @@ def renderizar_aba(aba):
     return mapa.get(aba, aba_orcamento)
 
 
-# =======================
+
 # Callback: Limpar Filtros
-# =====================
+
 
 @app.callback(
     Output("filtro-ano",       "value"),
@@ -447,9 +441,9 @@ def limpar_filtros(_):
     return None, None, None
 
 
-# ====================
+
 # Callback: ABA 1 — Eficiência Orçamentária
-# ====================
+
 
 @app.callback(
     Output("kpi-vl-total",           "children"),
@@ -540,9 +534,8 @@ def atualizar_orcamento(ano, mes, municipio):
     )
 
 
-# ===============
+
 # Callback: ABA 2 — Pressão Assistencial
-# ==============
 
 @app.callback(
     Output("kpi-qtd-03",          "children"),
@@ -631,9 +624,9 @@ def atualizar_pressao(ano, mes, municipio):
     )
 
 
-# ==========
+
 # Callback: ABA 3 — Produtividade Cirúrgica
-# ==========
+
 
 @app.callback(
     Output("kpi-qtd-04",            "children"),
@@ -711,9 +704,9 @@ def atualizar_cirurgias(ano, mes, municipio):
     )
 
 
-# ===========
+
 # Callback: ABA 4 — Visão Territorial (Mapa Coroplético)
-# ===========
+
 
 
 @app.callback(
@@ -784,9 +777,7 @@ def atualizar_mapa(variavel, ano, mes, municipio):
     return fig, titulo
 
 
-# ============
 # Entry Point
-# ============
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8050)

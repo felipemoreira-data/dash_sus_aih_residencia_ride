@@ -47,9 +47,9 @@ LABELS_CIRURGICAS_VL = {
 }
 
 
-# ---------------------
+
 # Conexão
-# --------------------
+
 
 def obter_conexao():
     """
@@ -74,9 +74,9 @@ def obter_conexao():
     return create_engine(url)
 
 
-# --------------
+
 # Utilitário interno: construção dinâmica da cláusula WHERE
-# -------------
+
 
 def _build_where(params: dict) -> tuple[str, dict]:
     """
@@ -93,9 +93,9 @@ def _build_where(params: dict) -> tuple[str, dict]:
     return where, bindings
 
 
-# ------------------
+
 # 1. Opções para os Dropdowns da Sidebar
-# ------------------
+
 def obter_opcoes_filtros() -> dict:
     """
     Retorna um dicionário com as listas únicas e ordenadas de:
@@ -121,9 +121,9 @@ def obter_opcoes_filtros() -> dict:
     }
 
 
-# --------------
+
 # 2. Dados para a Aba 1 — Eficiência Orçamentária
-# -------------
+
 
 def obter_dados_orcamento(
     ano_aih: str | None = None,
@@ -176,13 +176,13 @@ def obter_dados_orcamento(
     return df
 
 
-# ==================
-# 3. Dados para a Aba 2 — Pressão Assistencial
-# ==================
 
-# =====================
 # 3. Dados para a Aba 2 — Pressão Assistencial
-# =====================
+
+
+
+# 3. Dados para a Aba 2 — Pressão Assistencial
+
 
 def obter_dados_pressao(
     ano_aih: str | None = None,
@@ -228,9 +228,8 @@ def obter_dados_pressao(
     return df
 
 
-# ===================
+
 # 4. Dados para a Aba 3 — Produtividade Cirúrgica
-# ==================
 
 def obter_dados_cirurgias(
     ano_aih: str | None = None,
@@ -280,9 +279,9 @@ def obter_dados_cirurgias(
     return df
 
 
-# ==================
+
 # 5. Dados para a Aba 4 — Visão Territorial (Mapa)
-# ==================
+
 
 def obter_dados_mapa(
     ano_aih: str | None = None,
