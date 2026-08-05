@@ -36,6 +36,7 @@ app = dash.Dash(
     title="BI — Produção Hospitalar SIH/SUS",
 )
 
+server = app.server
 
 # Pré-carregamento das opções de filtro
 
